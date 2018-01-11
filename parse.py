@@ -6,11 +6,11 @@ else:
 	w = open("result"+sys.argv[1],"w")
 	for line in r:
 		towrite = ""
-		if sys.argv[2] == 80:
+		if int(sys.argv[2]) == 80:
 			towrite = "http://"
 		else:
 			towrite = "https://"
 		towrite += line[:-1]
-		if int(sys.argv[2]) != 80 and (sys.argv[2]) != 443:
+		if int(sys.argv[2]) != 80 and int(sys.argv[2]) != 443:
 			towrite += ":"+str(sys.argv[2])
 		w.write(towrite+"\n")
