@@ -4,7 +4,7 @@ if [ "$#" -lt 2 ]; then
     exit 1
 fi
 
-if [ "$#" -eq 2 ]; then
+if [ "$#" -eq 3 ]; then
     prefix=$3
 fi
 
