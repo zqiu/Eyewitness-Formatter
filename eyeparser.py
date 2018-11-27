@@ -1,9 +1,10 @@
 import sys
+import os
 if len(sys.argv) != 3:
 	print "need file and port"
 else:
 	r = open(sys.argv[1])
-	w = open("result"+sys.argv[1],"w")
+	w = open("result"+os.path.basename(r.name),"w")
 	for line in r:
 		towrite = ""
 		if int(sys.argv[2]) == 80:
