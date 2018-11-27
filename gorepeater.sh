@@ -9,4 +9,4 @@ if [ "$#" -eq 2 ]; then
 fi
 
 mkdir ~/gobusterout
-while read in; do ./gobuster -w $2 -u $prefix$in -k > ~/gobusterout/$in ; done < $1
+while read in; do $GOBIN/gobuster -w $2 -u $prefix$in -k > ~/gobusterout/$in ; done < $1
