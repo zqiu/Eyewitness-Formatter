@@ -1,7 +1,16 @@
 import sys
 
-if len(sys.argv) != 3:
-	print "need a hash file and a key file"
+def parsekeyfile(tomodify,f):
+	for line in f:
+        	colin=line.find(':')
+        	if colin == -1:
+                	print f.name + "file not formatted correctly"
+               		exit()
+       		tomodify[line[:colin]] = line[colin+1:]
+
+
+if len(sys.argv) != 3 and len(sys.argv) != 4:
+	print "need a hash file and a key file (optionally LMkey file)"
 	exit()
 
 hash = open(sys.argv[1])
@@ -10,12 +19,12 @@ result = open("result.txt","w")
 keysreplaced = 0
 
 keys = {}
-for line in key:
-	colin=line.find(':')
-	if colin == -1:
-		print "key file not formatted correctly"
-		exit()
-	keys[line[:colin]] = line[colin+1:]
+parsekeyfile(keys,key)
+
+lm = {}
+if len(sys.argv) == 4:
+	lmfile = open(sys.argv[3])
+	parsekeyfile(lm,lmfile)
 
 for line in hash:
 	replaced = False
