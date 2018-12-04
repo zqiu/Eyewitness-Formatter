@@ -2,12 +2,11 @@ import sys
 
 def parsekeyfile(tomodify,f):
 	for line in f:
-        	colin=line.find(':')
+        	colin=line.strip().find(':')
         	if colin == -1:
                 	print f.name + "file not formatted correctly"
                		exit()
-       		tomodify[line[:colin]] = line[colin+1:]
-
+       		tomodify[line.strip()[:colin]] = line.strip()[colin+1:]
 
 if len(sys.argv) != 3 and len(sys.argv) != 4:
 	print "need a hash file and a key file (optionally LMkey file)"
@@ -27,13 +26,21 @@ if len(sys.argv) == 4:
 	parsekeyfile(lm,lmfile)
 
 for line in hash:
-	replaced = False
-	for elem,val in keys.items():
-		if not replaced and line.find(elem) != -1:
-			replaced = True
-			result.write(line[:-1]+":"+val)
-			keysreplaced = keysreplaced + 1
-	if not replaced:
-		result.write(line)
+	cracked = ""
+	data = line.strip().split(':')
+	hashes = []
+	for a in data:
+		if len(a) == 32: #hashes are of len 32
+			hashes.append(a)
+	for a in hashes:
+		if a in keys:
+			cracked = keys[a]+":(NTLM):"
+		lmdata1 = a[:16] #LM hashes are broken up in 16 length
+		lmdata2 = a[16:]
+		if cracked == "" and lmdata1 in lm and lmdata2 in lm:
+			cracked = lm[lmdata1] + lm[lmdata2] + ":(LM):" 
+	if cracked != "":
+		keysreplaced = keysreplaced + 1
+	result.write(cracked+line)
 
 print "completed.",keysreplaced," values replaced"
